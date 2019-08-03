@@ -4,6 +4,7 @@
 
 LAME_FILE=lame-3.100.tar.gz
 LAME_DIR=lame-3.100
+MIN_IOS=10.0
 
 rm -rf $LAME_DIR;
 
@@ -35,7 +36,7 @@ ARCHS="arm64 armv7s x86_64 i386 armv7"
 # directories
 #SOURCE="lame"
 SOURCE=$LAME_DIR
-FAT=".fat-lame"
+FAT="fat"
 
 SCRATCH=".scratch-lame"
 # must be an absolute path
@@ -75,15 +76,15 @@ then
 		    PLATFORM="iPhoneSimulator"
 		    if [ "$ARCH" = "x86_64" ]
 		    then
-		    	SIMULATOR="-mios-simulator-version-min=7.0"
+		    	SIMULATOR="-mios-simulator-version-min=$MIN_IOS"
                         HOST=x86_64-apple-darwin
 		    else
-		    	SIMULATOR="-mios-simulator-version-min=5.0"
+                SIMULATOR="-mios-simulator-version-min=$MIN_IOS"
                         HOST=i386-apple-darwin
 		    fi
 		else
 		    PLATFORM="iPhoneOS"
-		    SIMULATOR=
+		    SIMULATOR="-miphoneos-version-min=$MIN_IOS"
                     HOST=arm-apple-darwin
 		fi
 
@@ -131,5 +132,6 @@ then
 	cp -f $FAT/lib/libmp3lame.a lame.framework/lame
 fi
 
+echo "FAT Directory::> $fat"
 #   clean tmp directories
-rm -rf $SOURCE $FAT $SCRATCH $THIN
+rm -rf $SOURCE  $SCRATCH $THIN #$FAT
